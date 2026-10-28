@@ -9,6 +9,7 @@ export default function ResultsModal({
   onNextLesson,
   hasNextLesson,
   language = 'km',
+  userName = '',
 }) {
   const isEn = language === 'en';
 
@@ -64,7 +65,13 @@ export default function ResultsModal({
         </div>
 
         <h2 className="text-2xl font-bold font-khmer text-slate-900 dark:text-white mb-1">
-          {isEn ? 'Congratulations! Lesson Completed' : 'អបអរសាទរ! បានបញ្ចប់មេរៀន'}
+          {userName
+            ? isEn
+              ? `Congratulations, ${userName}!`
+              : `អបអរសាទរ ${userName}! បានបញ្ចប់មេរៀន`
+            : isEn
+            ? 'Congratulations! Lesson Completed'
+            : 'អបអរសាទរ! បានបញ្ចប់មេរៀន'}
         </h2>
         <p className="text-xs text-slate-500 dark:text-slate-400 font-khmer mb-6">
           {lesson.title}

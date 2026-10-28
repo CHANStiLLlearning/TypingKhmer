@@ -18,6 +18,8 @@ export default function Header({
   language = 'km',
   onToggleLanguage,
   curriculum = CURRICULUM,
+  userName = '',
+  onChangeUser,
 }) {
   const isEn = language === 'en';
   return (
@@ -100,6 +102,24 @@ export default function Header({
 
         {/* 3. Right: Single Global Action Controls */}
         <div className="flex items-center gap-2 shrink-0">
+          {/* User Profile Badge & Switcher */}
+          {userName && (
+            <button
+              onClick={onChangeUser}
+              title={
+                isEn
+                  ? `Logged in as ${userName} (Click to switch user)`
+                  : `ឈ្មោះ៖ ${userName} (ចុចដើម្បីប្តូរឈ្មោះ)`
+              }
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold font-khmer shadow-sm transition-all"
+            >
+              <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center text-[10px] font-mono font-bold shrink-0">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+              <span className="truncate max-w-[110px] hidden sm:inline">{userName}</span>
+            </button>
+          )}
+
           {/* Language Switcher Pill: Khmer / English */}
           {onToggleLanguage && (
             <div className="flex items-center p-0.5 rounded-xl bg-slate-200/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold shadow-sm">

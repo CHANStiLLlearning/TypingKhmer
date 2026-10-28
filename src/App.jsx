@@ -3,10 +3,20 @@ import Header from './components/Header.jsx';
 import TypingArena from './components/TypingArena.jsx';
 import VirtualKeyboard from './components/VirtualKeyboard.jsx';
 import ResultsModal from './components/ResultsModal.jsx';
+import LoginModal from './components/LoginModal.jsx';
 import { CURRICULUM } from './data/lessons.js';
 import { ENGLISH_CURRICULUM } from './data/englishLessons.js';
 
 export default function App() {
+  // User name authentication state (Name-only, no password)
+  const [userName, setUserName] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('khmer-typing-username') || '';
+    }
+    return '';
+  });
+  const [isChangingUser, setIsChangingUser] = useState(false);
+
   // Language mode: 'km' (Khmer NiDA) | 'en' (English US QWERTY)
   const [language, setLanguage] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -117,6 +127,8 @@ export default function App() {
         language={language}
         onToggleLanguage={handleToggleLanguage}
         curriculum={curriculum}
+        userName={userName}
+        onChangeUser={() => setIsChangingUser(true)}
       />
 
       {/* 2. Main Full-Screen Body */}
@@ -164,6 +176,18 @@ export default function App() {
           onRetry={handleRetry}
           onNextLesson={handleNextLesson}
           hasNextLesson={hasNextLesson}
+          language={language}
+          userName={userName}
+        />
+      )}
+
+      {/* Name-only Login Modal (Onboarding Gate - No password needed) */}
+      {(!userName || isChangingUser) && (
+        <LoginModal
+          onLogin={(name) => {
+            setUserName(name);
+            setIsChangingUser(false);
+          }}
           language={language}
         />
       )}
