@@ -5,6 +5,8 @@ const fs = require('fs');
 let mainWindow = null;
 
 function createWindow() {
+  const iconPath = path.join(__dirname, '../build/icon.ico');
+
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 860,
@@ -13,6 +15,7 @@ function createWindow() {
     backgroundColor: '#020617', // slate-950
     autoHideMenuBar: true,
     title: 'Khmer Unicode Typing Tutor',
+    icon: fs.existsSync(iconPath) ? iconPath : undefined,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,

@@ -23,9 +23,11 @@
     "files": [
       "dist/**/*",
       "electron/**/*",
+      "build/icon.ico",
       "package.json"
     ],
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         {
           "target": "nsis",
