@@ -103,7 +103,7 @@ const independentVowelTests = [
   { char: 'ឳ', expectedCode: 'BracketRight', expectedLayer: 'altGr', expectedMod: 'AltGr' },
   { char: 'ឮ', expectedCode: 'Backslash', expectedLayer: 'normal', expectedMod: null },
   { char: 'ឭ', expectedCode: 'Backslash', expectedLayer: 'shift', expectedMod: 'Shift' },
-  { char: ' ', expectedCode: 'Space', expectedLayer: 'normal', expectedMod: null },
+  { char: ' ', expectedCode: 'Space', expectedLayer: 'shift', expectedMod: 'Shift' },
   { char: '\u200B', expectedCode: 'Space', expectedLayer: 'normal', expectedMod: null },
 ];
 
@@ -119,5 +119,15 @@ for (const test of independentVowelTests) {
 }
 console.log('✓ Test 5: Full Windows KBDKNI.DLL 100% key validation PASSED!');
 
+// Word separators must enforce Shift before the direct native-key shortcut.
+const khmerSpace = tokenizeLessonText('ក ល')[0].strokes.at(-1);
+const englishSpace = tokenizeLessonText('a b', 'en')[0].strokes.at(-1);
+for (const key of [' ', '\u200B', '\u00A0']) {
+  const event = { code: 'Space', key, shiftKey: false, altKey: false, ctrlKey: false };
+  if (validateKeystroke(event, khmerSpace)) throw new Error('Khmer separator accepted bare Space');
+  if (!validateKeystroke({ ...event, shiftKey: true }, khmerSpace)) throw new Error('Shift + Space rejected');
+}
+if (!validateKeystroke({ code: 'Space', key: ' ' }, englishSpace)) throw new Error('English Space rejected');
+console.log('✓ Shift + Space separator validation PASSED!');
 console.log('ALL TESTS PASSED SUCCESSFULLY! 🎉');
 

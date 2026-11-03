@@ -11,6 +11,25 @@
 
 ---
 
+## Offline use
+
+### Windows app (no internet or server required)
+
+Extract `release/Khmer Typing Tutor-1.0.0-win.zip` into a folder, then open
+`Khmer Typing Tutor.exe`. Keep the extracted files together. All lessons, fonts,
+and hand images are included. Names and preferences stay on this computer.
+
+To rebuild the ZIP: `npm exec electron-builder -- --win zip --x64` after `npm run build`.
+
+### Browser
+
+Run `npm run build` and `npm run preview`, then open `http://localhost:4173/`.
+The production app caches all files after the first successful visit. Once caching
+finishes, it can reload at the same address with the network disconnected.
+Browser offline caching requires localhost or HTTPS and is not enabled in `npm run dev`.
+Clearing browser site data removes the offline copy. Updated builds become active
+after all tabs of the old version close and the app is reopened online.
+
 ## 🌟 លក្ខណៈពិសេសចម្បង (Key Features)
 
 - 🇰🇭 **មេរៀនអក្សរខ្មែរគ្រប់ជ្រុងជ្រោយ (១៩ មេរៀន)**៖

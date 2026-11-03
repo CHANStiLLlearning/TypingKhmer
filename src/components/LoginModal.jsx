@@ -126,7 +126,7 @@ export default function LoginModal({ onLogin, language = 'km' }) {
         {/* Header: Large App Icon & Title */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6">
           <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl p-1 bg-gradient-to-tr from-sky-500 to-indigo-600 shadow-xl shadow-sky-500/30 flex items-center justify-center shrink-0">
-            <img src="/icon.png" alt="Logo" className="w-full h-full object-contain rounded-xl" />
+            <img src={`${import.meta.env.BASE_URL}icon.png`} alt="Logo" className="w-full h-full object-contain rounded-xl" />
           </div>
 
           <div className="text-center sm:text-left">

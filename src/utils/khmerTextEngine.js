@@ -189,10 +189,10 @@ export function tokenizeLessonText(fullText, language = 'km') {
       strokes.push({
         id: `stroke-space-${wIdx}`,
         char: ' ',
-        name: language === 'en' ? 'Space' : 'ដកឃ្លា (Space)',
+        name: language === 'en' ? 'Space' : 'ដកឃ្លា (Shift + Space)',
         code: 'Space',
-        layer: 'normal',
-        modifier: null,
+        layer: language === 'en' ? 'normal' : 'shift',
+        modifier: language === 'en' ? null : 'Shift',
         finger: 'thumb',
         keyData: spaceKey,
         isCoeng: false,
@@ -226,6 +226,15 @@ export function tokenizeLessonText(fullText, language = 'km') {
 export function validateKeystroke(event, expectedStroke) {
   if (!expectedStroke) return false;
 
+  // Validate spaces before native character matching, which would bypass Shift.
+  if (expectedStroke.code === 'Space') {
+    const isSpace = event.code === 'Space' || [' ', '\u200B', '\u00A0'].includes(event.key);
+    if (!isSpace) return false;
+    if (expectedStroke.modifier === 'Shift') return !!event.shiftKey && !event.altKey && !event.ctrlKey;
+    if (expectedStroke.modifier === 'AltGr') return !!event.altKey && !event.shiftKey;
+    return !event.shiftKey && !event.altKey && !event.ctrlKey;
+  }
+
   // 1. Direct native Khmer key match (e.g., if user has Khmer NiDA keyboard installed in OS)
   if (event.key === expectedStroke.char) {
     return true;
@@ -243,11 +252,6 @@ export function validateKeystroke(event, expectedStroke) {
       // Normal key should not have Shift or Alt pressed (unless capsLock is on, but we don't rely on it)
       return !event.shiftKey && !event.altKey;
     }
-    return true;
-  }
-
-  // 3. Space special case
-  if (expectedStroke.code === 'Space' && (event.code === 'Space' || event.key === ' ' || event.key === '\u200B' || event.key === '\u00A0')) {
     return true;
   }
 

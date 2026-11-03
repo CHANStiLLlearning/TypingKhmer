@@ -644,13 +644,13 @@ export const KHMER_KEY_MAP = {
   },
   Space: {
     code: 'Space',
-    label: 'Space (ដកឃ្លា)',
+    label: 'Shift + Space (ដកឃ្លា)',
     row: 4,
     width: 'flex-1 max-w-xl',
     isSpecial: true,
     finger: 'thumb',
-    normal: { char: ' ', name: 'Space / ដកឃ្លា' },
-    shift:  null,
+    normal: { char: '\u200B', name: 'Zero-width space' },
+    shift: { char: ' ', name: 'Shift + Space / ដកឃ្លា' },
     altGr:  { char: '\u00A0', name: 'Non-breaking space' },
   },
   AltRight: {
