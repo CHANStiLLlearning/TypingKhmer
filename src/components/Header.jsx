@@ -41,7 +41,7 @@ export default function Header({
               </span>
             </div>
             <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 hidden sm:block">
-              {isEn ? 'Touch Typing Master (45 Words)' : 'Khmer Unicode Typing Tutor'}
+              {isEn ? 'Touch Typing Master (25 Words)' : 'Khmer Unicode Typing Tutor'}
             </p>
           </div>
         </div>
