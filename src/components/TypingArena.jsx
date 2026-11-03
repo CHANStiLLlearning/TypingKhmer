@@ -14,6 +14,7 @@ export default function TypingArena({
   onActiveKeyChange,
   onKeyPress,
   language = 'km',
+  onOpenHandGuide,
 }) {
   // Tokenize lesson into words with individual keystroke breakdowns
   const words = useMemo(() => {
@@ -144,6 +145,7 @@ export default function TypingArena({
     return () => clearTimeout(t);
   }, [lesson, handleReset]);
 
+
   // Handle keystroke input
   const handleKeyDown = useCallback(
     (e) => {
@@ -158,7 +160,8 @@ export default function TypingArena({
       }
 
       // Ignore browser shortcuts
-      if (e.ctrlKey || e.metaKey) {
+      // Allow Windows AltGr (Ctrl+Alt)
+      if ((e.ctrlKey && !e.altKey) || e.metaKey) {
         return;
       }
 
@@ -353,8 +356,18 @@ export default function TypingArena({
           )}
         </div>
 
-        {/* Action Button: Restart lesson */}
+        {/* Action Buttons: Hand Guide & Restart lesson */}
         <div className="flex items-center gap-2">
+          {onOpenHandGuide && (
+            <button
+              onClick={onOpenHandGuide}
+              title="មើលរបៀបដាក់ដៃលើក្តារចុច (Hand Placement Guide)"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 dark:bg-sky-950/60 dark:hover:bg-sky-900/80 border border-sky-200 dark:border-sky-800/80 text-sky-700 dark:text-sky-300 text-xs font-khmer font-bold transition-all shadow-sm"
+            >
+              <span>🤲</span>
+              <span className="hidden sm:inline">របៀបដាក់ដៃ</span>
+            </button>
+          )}
           <button
             onClick={handleReset}
             title="Restart lesson (Esc)"

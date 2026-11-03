@@ -20,6 +20,7 @@ export default function Header({
   curriculum = CURRICULUM,
   userName = '',
   onChangeUser,
+  onOpenHandGuide,
 }) {
   const isEn = language === 'en';
   return (
@@ -165,6 +166,18 @@ export default function Header({
               <span className="hidden sm:inline font-khmer">
                 {isKeyboardVisible ? 'ក្តារចុច: បើក' : 'ក្តារចុច: បិទ'}
               </span>
+            </button>
+          )}
+
+          {/* Hand Placement Guide Button */}
+          {onOpenHandGuide && (
+            <button
+              onClick={onOpenHandGuide}
+              title={isEn ? 'Keyboard Hand Placement Guide' : 'ការណែនាំពីរបៀបដាក់ដៃលើក្តារចុច (Hand Placement Guide)'}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500/10 to-indigo-500/10 hover:from-sky-500/20 hover:to-indigo-500/20 border border-sky-300 dark:border-sky-600/50 text-sky-700 dark:text-sky-300 transition-all shadow-sm text-xs font-semibold font-khmer cursor-pointer"
+            >
+              <span className="text-sm leading-none">🤲</span>
+              <span className="hidden md:inline">របៀបដាក់ដៃ</span>
             </button>
           )}
 

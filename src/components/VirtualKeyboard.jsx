@@ -6,7 +6,7 @@ import {
 } from '../data/khmerKeyMap.js';
 import { ENGLISH_KEY_MAP } from '../data/englishKeyMap.js';
 import KeyboardHandsOverlay from './KeyboardHandsOverlay.jsx';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Maximize2 } from 'lucide-react';
 
 // Proportional flex weights to make each row span exactly 100% full width
 const KEY_FLEX_WEIGHTS = {
@@ -34,6 +34,7 @@ export default function VirtualKeyboard({
   lastKeyPressed, // { code, isCorrect }
   theme,
   language = 'km',
+  onOpenHandGuide,
 }) {
   const isEn = language === 'en';
   const keyMap = isEn ? ENGLISH_KEY_MAP : KHMER_KEY_MAP;
@@ -42,13 +43,17 @@ export default function VirtualKeyboard({
   const currentFinger = activeFinger ? FINGER_CONFIG[activeFinger] : null;
 
   // Hands overlay visibility toggle: 0.55 (default visible) -> 0.25 (faint) -> 0 (off)
-  const [handsOpacity, setHandsOpacity] = useState(0.55);
+  // Hands overlay visibility toggle: default 0.35 (35%)
+  const [handsOpacity, setHandsOpacity] = useState(0.35);
 
   const cycleHandsOpacity = () => {
     setHandsOpacity((prev) => {
-      if (prev === 0.55) return 0.25;
-      if (prev === 0.25) return 0;
-      return 0.55;
+      if (prev === 0.35) return 0.55;
+      if (prev === 0.55) return 0.75;
+      if (prev === 0.75) return 0.90;
+      if (prev === 0.90) return 0;
+      if (prev === 0.35) return 0;
+      return 0.35;
     });
   };
 
@@ -167,30 +172,33 @@ export default function VirtualKeyboard({
           )}
         </div>
 
-        {/* Right: Hands Overlay Opacity Toggle */}
-        <button
-          onClick={cycleHandsOpacity}
-          title="ចុចដើម្បីបិទ/បើក ឬប្តូរភាពច្បាស់នៃដៃលើ Keyboard"
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/90 hover:bg-white dark:bg-slate-800/90 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-700 text-xs font-khmer font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all shadow-sm"
-        >
-          {handsOpacity > 0 ? (
-            <>
-              <Eye className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-              <span>ដៃលើ Keyboard: {Math.round(handsOpacity * 100)}%</span>
-            </>
-          ) : (
-            <>
-              <EyeOff className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-              <span>ដៃលើ Keyboard: បិទ</span>
-            </>
-          )}
-        </button>
+        {/* Right: Hands Overlay Opacity Controls */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={cycleHandsOpacity}
+            title="ចុចដើម្បីប្តូរភាពច្បាស់នៃដៃលើក្តារចុច (Change Hands Opacity)"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/90 hover:bg-white dark:bg-slate-800/90 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-700 text-xs font-khmer font-bold text-slate-800 dark:text-slate-200 hover:text-sky-600 dark:hover:text-sky-400 transition-all shadow-sm cursor-pointer"
+          >
+            <span className="text-sm leading-none">🤲</span>
+            {handsOpacity > 0 ? (
+              <>
+                <Eye className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span>ដៃលើក្តារចុច: {Math.round(handsOpacity * 100)}%</span>
+              </>
+            ) : (
+              <>
+                <EyeOff className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                <span className="text-slate-500">ដៃលើក្តារចុច: បិទ</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* ============================================================ */}
       {/* KEYBOARD WORKSPACE: KEYS WITH DIRECT ACCURATE HANDS OVERLAY  */}
       {/* ============================================================ */}
-      <div ref={keyboardContainerRef} className="relative w-full">
+            <div ref={keyboardContainerRef} className="relative w-full">
         {/* TRANSLUCENT HANDS OVERLAY RESTING DIRECTLY & ACCURATELY ON KEYS */}
         <KeyboardHandsOverlay
           keyPositions={keyPositions}

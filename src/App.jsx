@@ -4,6 +4,7 @@ import TypingArena from './components/TypingArena.jsx';
 import VirtualKeyboard from './components/VirtualKeyboard.jsx';
 import ResultsModal from './components/ResultsModal.jsx';
 import LoginModal from './components/LoginModal.jsx';
+import HandGuideModal from './components/HandGuideModal.jsx';
 import { CURRICULUM } from './data/lessons.js';
 import { ENGLISH_CURRICULUM } from './data/englishLessons.js';
 
@@ -50,6 +51,7 @@ export default function App() {
   });
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(true);
+  const [isHandGuideModalOpen, setIsHandGuideModalOpen] = useState(false);
 
   // Apply theme class to <html> element
   useEffect(() => {
@@ -129,6 +131,7 @@ export default function App() {
         curriculum={curriculum}
         userName={userName}
         onChangeUser={() => setIsChangingUser(true)}
+        onOpenHandGuide={() => setIsHandGuideModalOpen(true)}
       />
 
       {/* 2. Main Full-Screen Body */}
@@ -142,8 +145,9 @@ export default function App() {
             onActiveKeyChange={setActiveKeyInfo}
             onKeyPress={handleKeyPress}
             language={language}
+            onOpenHandGuide={() => setIsHandGuideModalOpen(true)}
           />
-        </div>
+          </div>
 
         {/* Full-Width Virtual Keyboard with Hands Resting Directly on Keys */}
         {isKeyboardVisible ? (
@@ -153,8 +157,9 @@ export default function App() {
               lastKeyPressed={lastKeyPressed}
               theme={theme}
               language={language}
+              onOpenHandGuide={() => setIsHandGuideModalOpen(true)}
             />
-          </div>
+            </div>
         ) : (
           <div className="w-full flex justify-center py-2 shrink-0">
             <button
@@ -164,7 +169,7 @@ export default function App() {
               <span>⌨️</span>
               <span>{language === 'en' ? 'Show Virtual Keyboard' : 'បង្ហាញក្តារចុច (Show Virtual Keyboard)'}</span>
             </button>
-          </div>
+            </div>
         )}
       </main>
 
@@ -191,6 +196,13 @@ export default function App() {
           language={language}
         />
       )}
+      {/* Keyboard Hand Placement Guide Modal */}
+      <HandGuideModal
+        isOpen={isHandGuideModalOpen}
+        onClose={() => setIsHandGuideModalOpen(false)}
+        activeFinger={activeKeyInfo?.finger}
+        language={language}
+      />
     </div>
   );
 }
